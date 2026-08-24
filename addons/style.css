@@ -82,6 +82,12 @@ body {
   transition: border-color 0.15s ease;
 }
 .profile-card:hover .profile-icon { border-color: #fff; }
+.profile-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
 .lock-badge { position: absolute; bottom: 4px; right: 4px; font-size: 14px; }
 .profile-label { font-size: 14px; color: var(--text-muted); }
 
