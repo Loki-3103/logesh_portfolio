@@ -5,8 +5,9 @@ function render() {
   renderDevSection();
   renderProjects();
   renderSkills();
-  renderConnect();
   renderBeyondCode();
+  renderFavorites();
+  renderConnect();
 }
 
 function el(tag, attrs, children) {
@@ -85,6 +86,13 @@ function renderProjects() {
       target: "_blank",
       rel: "noopener"
     });
+
+    if (project.poster) {
+      var imgWrap = el("div", { className: "poster-img-wrap" });
+      imgWrap.appendChild(el("img", { src: project.poster, alt: project.title }));
+      poster.appendChild(imgWrap);
+    }
+
     poster.appendChild(el("div", { className: "poster-fill", textContent: project.title }));
     poster.appendChild(el("p", { className: "poster-tags", textContent: project.tags }));
     item.appendChild(poster);
@@ -134,53 +142,67 @@ function renderSkills() {
   app.appendChild(section);
 }
 
-function renderConnect() {
+function renderBeyondCode() {
   var app = document.getElementById("app");
-  var section = el("section", { id: "connect", className: "connect-section" });
+  if (BEYOND_CODE.length === 0) return;
 
-  section.appendChild(el("p", { className: "section-label", textContent: "Connect" }));
+  var section = el("section", { className: "row" });
+  section.appendChild(el("p", { className: "row-title", textContent: "Beyond code" }));
 
-  var track = el("div", { className: "poster-icon-track" });
-  CONNECT.forEach(function(item) {
+  var track = el("div", { className: "skill-track" });
+  BEYOND_CODE.forEach(function(item) {
     var card = el("a", {
-      className: "poster-icon-card",
+      className: "skill-poster",
       href: item.url,
       target: "_blank",
       rel: "noopener"
     });
-    card.appendChild(el("img", { src: item.icon, alt: "" }));
+    card.appendChild(el("img", { src: item.icon, alt: item.name }));
     card.appendChild(el("span", { textContent: item.name }));
     track.appendChild(card);
   });
   section.appendChild(track);
+  app.appendChild(section);
+}
 
-  if (BEYOND_CODE.length > 0) {
-    section.appendChild(el("p", { className: "section-label section-label-muted", textContent: "Beyond code" }));
+function renderFavorites() {
+  var app = document.getElementById("app");
+  if (FAVORITES.length === 0) return;
 
-    var bTrack = el("div", { className: "poster-icon-track" });
-    BEYOND_CODE.forEach(function(item) {
-      var card = el("a", {
-        className: "poster-icon-card poster-icon-card-muted",
-        href: item.url,
-        target: "_blank",
-        rel: "noopener"
-      });
-      card.appendChild(el("img", { src: item.icon, alt: "" }));
-      card.appendChild(el("span", { textContent: item.name }));
-      bTrack.appendChild(card);
+  var section = el("section", { className: "row" });
+  section.appendChild(el("p", { className: "row-title", textContent: "Favorites" }));
+
+  var track = el("div", { className: "skill-track" });
+  FAVORITES.forEach(function(movie) {
+    var card = el("div", { className: "fav-card" });
+    var imgWrap = el("div", { className: "fav-poster" });
+    imgWrap.appendChild(el("img", { src: movie.poster, alt: movie.title }));
+    card.appendChild(imgWrap);
+    card.appendChild(el("span", { className: "fav-title", textContent: movie.title }));
+    track.appendChild(card);
+  });
+  section.appendChild(track);
+  app.appendChild(section);
+}
+
+function renderConnect() {
+  var app = document.getElementById("app");
+  var section = el("section", { id: "connect", className: "row" });
+  section.appendChild(el("p", { className: "row-title", textContent: "Connect" }));
+
+  var track = el("div", { className: "skill-track" });
+  CONNECT.forEach(function(item) {
+    var card = el("a", {
+      className: "skill-poster",
+      href: item.url,
+      target: "_blank",
+      rel: "noopener"
     });
-    section.appendChild(bTrack);
-  }
-
-  if (FAVORITES.length > 0) {
-    section.appendChild(el("p", { className: "row-title", textContent: "Favorites" }));
-    var chipTrack = el("div", { className: "chip-track" });
-    FAVORITES.forEach(function(fav) {
-      chipTrack.appendChild(el("span", { className: "chip", textContent: fav }));
-    });
-    section.appendChild(chipTrack);
-  }
-
+    card.appendChild(el("img", { src: item.icon, alt: item.name }));
+    card.appendChild(el("span", { textContent: item.name }));
+    track.appendChild(card);
+  });
+  section.appendChild(track);
   app.appendChild(section);
 }
 

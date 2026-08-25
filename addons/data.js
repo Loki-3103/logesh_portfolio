@@ -4,7 +4,7 @@ var PROFILE = {
   name: "Logesh T",
   tagline: "Backend Developer · Final-Year CS & Design Student",
   bio: "I build scalable backend systems and APIs, with a focus on Python, FastAPI, and cloud-native practices. Currently seeking SDE internship and entry-level opportunities.",
-  resumeLink: "#",
+  resumeLink: "images/LogeshT_SDE.pdf",
   linkedinLink: "https://www.linkedin.com/in/logesh-t-828b83390",
   devPasscode: "2201",
   devSection: {
@@ -16,9 +16,9 @@ var PROFILE = {
 };
 
 var PROJECTS = [
-  { title: "ReelFind", tags: "FastAPI · React · TMDb API", url: "https://github.com/Loki-3103/ReelFind" },
-  { title: "TAP2TRACK", tags: "Spring Boot · MySQL · SIH 2025", url: "https://github.com/Loki-3103" },
-  { title: "Movie recommendation engine", tags: "FastAPI · MySQL · Docker", url: "https://github.com/Loki-3103" }
+  { title: "ReelFind", tags: "FastAPI · React · TMDb API", url: "https://github.com/Loki-3103/ReelFind", poster: "images/reelfind.jpg" },
+  { title: "TAP2TRACK", tags: "Spring Boot · MySQL · SIH 2025", url: "https://github.com/Loki-3103", poster: "images/tap2track.jpg" },
+  { title: "Movie recommendation engine", tags: "FastAPI · MySQL · Docker", url: "https://github.com/Loki-3103", poster: "images/movie-recommendation.jpg" }
 ];
 
 var SKILL_ROWS = [
@@ -64,11 +64,9 @@ var SKILL_ROWS = [
 ];
 
 var CONNECT = [
-  { name: "LinkedIn", icon: "https://cdn.simpleicons.org/linkedin/0A66C2", url: "https://www.linkedin.com/in/logesh-t-828b83390" },
+  { name: "LinkedIn", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg", url: "https://www.linkedin.com/in/logesh-t-828b83390" },
   { name: "Email", icon: "https://cdn.simpleicons.org/gmail/EA4335", url: "mailto:logesht3103@gmail.com" },
-  { name: "GitHub", icon: "https://cdn.simpleicons.org/github/FFFFFF", url: "https://github.com/Loki-3103" },
-  { name: "LeetCode", icon: "https://cdn.simpleicons.org/leetcode/FFA116", url: "https://leetcode.com/log_esh7695" },
-  { name: "HackerRank", icon: "https://cdn.simpleicons.org/hackerrank/2EC866", url: "https://www.hackerrank.com/logesht3103" }
+  { name: "GitHub", icon: "https://cdn.simpleicons.org/github/FFFFFF", url: "https://github.com/Loki-3103" }
 ];
 
 var BEYOND_CODE = [
@@ -76,4 +74,9 @@ var BEYOND_CODE = [
   { name: "Letterboxd", icon: "https://cdn.simpleicons.org/letterboxd/00E054", url: "https://letterboxd.com/lokii2201/" }
 ];
 
-var FAVORITES = ["Inception", "Interstellar", "The Dark Knight", "Se7en"];
+var FAVORITES = [
+  { title: "Inception", poster: "images/inception.jpg" },
+  { title: "Meiyazhagan", poster: "images/meiyazhagan.jpg" },
+  { title: "Breaking Bad", poster: "https://image.tmdb.org/t/p/w300/ggFHVNu6YYI5L9pCfOacjizRGt.jpg" },
+  { title: "Se7en", poster: "https://image.tmdb.org/t/p/w300/6yoghtyTpznpBik8EngEmJskVUO.jpg" }
+];
