@@ -76,6 +76,7 @@
 
     // Setup nav AFTER renderApp creates the DOM
     setupNavScroll();
+    setupCardTilt();
   }
 
   // 4. Avatar dropdown
@@ -216,5 +217,40 @@
         ticking = true;
       }
     }, { passive: true });
+  }
+
+  // === CURSOR-REACTIVE CARD TILT + SPOTLIGHT GLOW ===
+  function setupCardTilt() {
+    if (prefersReducedMotion) return;
+
+    var cards = document.querySelectorAll(".skill-poster, .fav-card, .poster-icon-card");
+
+    cards.forEach(function (card) {
+      card.addEventListener("mousemove", function (e) {
+        var rect = card.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        var midX = rect.width / 2;
+        var midY = rect.height / 2;
+
+        // 3D tilt: max ±6°
+        var rotateY = ((x - midX) / midX) * 6;
+        var rotateX = ((midY - y) / midY) * 6;
+
+        card.style.transform = "perspective(600px) rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg) scale(1.06)";
+
+        // Spotlight glow position
+        var pctX = (x / rect.width) * 100;
+        var pctY = (y / rect.height) * 100;
+        card.style.setProperty("--mx", pctX + "%");
+        card.style.setProperty("--my", pctY + "%");
+      });
+
+      card.addEventListener("mouseleave", function () {
+        card.style.transform = "";
+        card.style.removeProperty("--mx");
+        card.style.removeProperty("--my");
+      });
+    });
   }
 })();

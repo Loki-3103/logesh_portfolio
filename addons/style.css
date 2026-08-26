@@ -427,11 +427,29 @@ body {
   font-size: 10px;
   text-align: center;
   padding: 10px 6px;
-  transition: transform 0.15s ease, background 0.15s ease;
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 600px;
 }
 
-.skill-poster:hover { transform: scale(1.08); background: #2f2f2f; }
-.skill-poster img { width: 34px; height: 34px; object-fit: contain; }
+.skill-poster::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  background: radial-gradient(circle 120px at var(--mx, 50%) var(--my, 50%), rgba(229,9,20,0.25), transparent 70%);
+  z-index: 1;
+}
+
+.skill-poster:hover::before { opacity: 1; }
+.skill-poster:hover { background: #2f2f2f; box-shadow: 0 0 20px rgba(229,9,20,0.15); }
+.skill-poster img { width: 34px; height: 34px; object-fit: contain; position: relative; z-index: 2; }
+.skill-poster span { position: relative; z-index: 2; }
 .skill-poster-text .skill-glyph { font-size: 20px; color: var(--text); font-weight: 600; }
 
 /* ===== CHIPS ===== */
