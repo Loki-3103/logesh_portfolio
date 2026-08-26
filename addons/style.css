@@ -147,6 +147,17 @@ body {
   background: linear-gradient(180deg, #141414 0%, rgba(20,20,20,0.95) 60%, rgba(20,20,20,0.7) 100%);
 }
 
+.navbar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: calc(var(--scroll-pct, 0) * 1%);
+  background: var(--red);
+  transition: width 0.08s linear;
+}
+
 .nav-left {
   display: flex;
   align-items: center;
@@ -174,10 +185,14 @@ body {
   font-weight: 500;
   padding: 6px 14px;
   border-radius: 20px;
-  transition: color 0.15s, background 0.15s;
+  transition: color 0.2s, background 0.25s ease, transform 0.1s;
 }
 
 .nav-link:hover { color: #fff; }
+
+.nav-link:active {
+  transform: scale(0.93);
+}
 
 .nav-link.active {
   color: #fff;

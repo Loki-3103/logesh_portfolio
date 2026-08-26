@@ -103,7 +103,7 @@
     }
     var startY = window.pageYOffset;
     var distance = targetY - startY;
-    var duration = 600;
+    var duration = Math.min(600, Math.max(280, Math.abs(distance) * 0.6));
     var startTime = null;
 
     function easeInOutCubic(t) {
@@ -195,15 +195,22 @@
       });
     }
 
-    // Navbar background on scroll
+    // Navbar background + scroll progress bar on scroll
     var navbar = document.getElementById("navbar");
     var ticking = false;
     window.addEventListener("scroll", function () {
       if (!ticking) {
         requestAnimationFrame(function () {
-          navbar.style.background = window.pageYOffset > 20
+          var y = window.pageYOffset;
+          navbar.style.background = y > 20
             ? "rgba(20,20,20,0.98)"
             : "linear-gradient(180deg, #141414 0%, rgba(20,20,20,0.95) 60%, rgba(20,20,20,0.7) 100%)";
+
+          // Scroll progress bar
+          var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+          var pct = maxScroll > 0 ? Math.min((y / maxScroll) * 100, 100) : 0;
+          navbar.style.setProperty("--scroll-pct", pct);
+
           ticking = false;
         });
         ticking = true;
