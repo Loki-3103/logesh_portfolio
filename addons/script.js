@@ -196,7 +196,7 @@
       });
     }
 
-    // Navbar background + scroll progress bar on scroll
+    // Navbar background on scroll
     var navbar = document.getElementById("navbar");
     var ticking = false;
     window.addEventListener("scroll", function () {
@@ -204,14 +204,8 @@
         requestAnimationFrame(function () {
           var y = window.pageYOffset;
           navbar.style.background = y > 20
-            ? "rgba(20,20,20,0.98)"
-            : "linear-gradient(180deg, #141414 0%, rgba(20,20,20,0.95) 60%, rgba(20,20,20,0.7) 100%)";
-
-          // Scroll progress bar
-          var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-          var pct = maxScroll > 0 ? Math.min((y / maxScroll) * 100, 100) : 0;
-          navbar.style.setProperty("--scroll-pct", pct);
-
+            ? "rgba(10,10,10,0.96)"
+            : "rgba(10,10,10,0.92)";
           ticking = false;
         });
         ticking = true;
