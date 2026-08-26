@@ -1,4 +1,4 @@
-// script.js — Intro animation, profile picker, passcode gate, avatar swap.
+// script.js — Intro animation, profile picker, passcode gate, avatar swap, nav scroll.
 
 (function () {
   var introScreen = document.getElementById("introScreen");
@@ -9,7 +9,6 @@
   var passcodeSubmit = document.getElementById("passcodeSubmit");
   var passcodeError = document.getElementById("passcodeError");
 
-  // Avatar / dropdown elements
   var avatarImg = document.getElementById("avatarImg");
   var avatarWrap = document.getElementById("avatarWrap");
   var avatarDropdown = document.getElementById("avatarDropdown");
@@ -28,28 +27,26 @@
     browsing: "Just browsing"
   };
 
-  // 1. Show who's watching after intro finishes (~2.1s)
+  // 1. Intro
   setTimeout(function () {
     introScreen.classList.add("hidden");
     profileScreen.classList.remove("hidden");
   }, 2100);
 
-  // 2. Profile card clicks
+  // 2. Profile cards
   document.querySelectorAll(".profile-card").forEach(function (card) {
     card.addEventListener("click", function () {
       var profile = card.dataset.profile;
-
       if (profile === "developer") {
         passcodeBox.classList.remove("hidden");
         passcodeInput.focus();
         return;
       }
-
       enterSite(profile);
     });
   });
 
-  // 3. Passcode check
+  // 3. Passcode
   passcodeSubmit.addEventListener("click", checkPasscode);
   passcodeInput.addEventListener("keydown", function (e) {
     if (e.key === "Enter") checkPasscode();
@@ -68,19 +65,20 @@
     profileScreen.classList.add("hidden");
     mainSite.classList.remove("hidden");
 
-    // Set navbar avatar
     avatarImg.src = AVATAR_MAP[profile] || "";
     dropdownName.textContent = NAME_MAP[profile] || profile;
 
-    // Render all content from data.js
     if (typeof renderApp === "function") renderApp();
 
     if (profile === "developer") {
       if (typeof showDevSection === "function") showDevSection();
     }
+
+    // Setup nav AFTER renderApp creates the DOM
+    setupNavScroll();
   }
 
-  // 4. Avatar dropdown toggle
+  // 4. Avatar dropdown
   avatarWrap.addEventListener("click", function (e) {
     e.stopPropagation();
     avatarDropdown.classList.toggle("hidden");
@@ -90,12 +88,11 @@
     avatarDropdown.classList.add("hidden");
   });
 
-  // 5. Switch profile — reload to restart intro + picker
   switchBtn.addEventListener("click", function () {
     window.location.reload();
   });
 
-  // 6. Navigation scroll behavior
+  // === NAV SCROLL ===
   var HEADER_HEIGHT = 60;
   var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -116,8 +113,7 @@
     function step(timestamp) {
       if (!startTime) startTime = timestamp;
       var progress = Math.min((timestamp - startTime) / duration, 1);
-      var eased = easeInOutCubic(progress);
-      window.scrollTo(0, startY + distance * eased);
+      window.scrollTo(0, startY + distance * easeInOutCubic(progress));
       if (progress < 1) requestAnimationFrame(step);
     }
 
@@ -130,92 +126,83 @@
     return top - HEADER_HEIGHT;
   }
 
-  var navLinks = document.querySelectorAll(".nav-link");
-
   function setActiveLink(section) {
-    navLinks.forEach(function (link) {
+    document.querySelectorAll(".nav-link").forEach(function (link) {
       var s = link.getAttribute("data-section");
-      if (s === "home" && section === "home") link.classList.add("active");
-      else if (s === "projects" && (section === "projects" || section === "skills")) link.classList.add("active");
-      else if (s === "skills" && (section === "projects" || section === "skills")) link.classList.add("active");
-      else if (s === "connect" && section === "connect") link.classList.add("active");
-      else link.classList.remove("active");
+      var active =
+        (s === "home" && section === "home") ||
+        (s === "projects" && (section === "projects" || section === "skills")) ||
+        (s === "skills" && (section === "projects" || section === "skills")) ||
+        (s === "connect" && section === "connect");
+      link.classList.toggle("active", !!active);
     });
   }
 
-  navLinks.forEach(function (link) {
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-      var section = link.getAttribute("data-section");
-      var target = null;
-
-      if (section === "home") {
-        smoothScrollTo(0);
-        setActiveLink("home");
-        return;
-      }
-
-      if (section === "projects" || section === "skills") {
-        target = document.getElementById("projects");
-      } else if (section === "connect") {
-        target = document.getElementById("connect");
-      }
-
-      if (target) {
-        smoothScrollTo(getOffsetTop(target));
-        setActiveLink(section);
-      }
-    });
-
-    link.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" || e.key === " ") {
+  function setupNavScroll() {
+    document.querySelectorAll(".nav-link").forEach(function (link) {
+      link.addEventListener("click", function (e) {
         e.preventDefault();
-        link.click();
-      }
+        var section = link.getAttribute("data-section");
+        var target = null;
+
+        if (section === "home") {
+          smoothScrollTo(0);
+          setActiveLink("home");
+          return;
+        }
+
+        if (section === "projects" || section === "skills") {
+          target = document.getElementById("projects");
+        } else if (section === "connect") {
+          target = document.getElementById("connect");
+        }
+
+        if (target) {
+          smoothScrollTo(getOffsetTop(target));
+          setActiveLink(section);
+        }
+      });
     });
-  });
 
-  // 7. IntersectionObserver for active state on scroll
-  var observerTargets = [
-    { id: "hero", section: "home" },
-    { id: "projects", section: "projects" },
-    { id: "connect", section: "connect" }
-  ];
+    // IntersectionObserver for scroll-based active state
+    var targets = [
+      { id: "hero", section: "home" },
+      { id: "projects", section: "projects" },
+      { id: "connect", section: "connect" }
+    ];
 
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        var match = observerTargets.find(function (t) { return t.id === entry.target.id; });
-        if (match) setActiveLink(match.section);
-      }
-    });
-  }, {
-    rootMargin: "-" + HEADER_HEIGHT + "px 0px -40% 0px",
-    threshold: 0
-  });
+    if ("IntersectionObserver" in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var match = targets.find(function (t) { return t.id === entry.target.id; });
+            if (match) setActiveLink(match.section);
+          }
+        });
+      }, {
+        rootMargin: "-" + HEADER_HEIGHT + "px 0px -40% 0px",
+        threshold: 0
+      });
 
-  observerTargets.forEach(function (t) {
-    var el = document.getElementById(t.id);
-    if (el) observer.observe(el);
-  });
+      targets.forEach(function (t) {
+        var el = document.getElementById(t.id);
+        if (el) observer.observe(el);
+      });
+    }
 
-  // 8. Scroll-based navbar background opacity
-  var navbar = document.getElementById("navbar");
-  var scrollHandler = (function () {
+    // Navbar background on scroll
+    var navbar = document.getElementById("navbar");
     var ticking = false;
-    return function () {
+    window.addEventListener("scroll", function () {
       if (!ticking) {
         requestAnimationFrame(function () {
-          var scrolled = window.pageYOffset > 20;
-          navbar.style.background = scrolled
+          navbar.style.background = window.pageYOffset > 20
             ? "rgba(20,20,20,0.98)"
             : "linear-gradient(180deg, #141414 0%, rgba(20,20,20,0.95) 60%, rgba(20,20,20,0.7) 100%)";
           ticking = false;
         });
         ticking = true;
       }
-    };
-  })();
-
-  window.addEventListener("scroll", scrollHandler, { passive: true });
+    }, { passive: true });
+  }
 })();
