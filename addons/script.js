@@ -1,4 +1,4 @@
-// script.js — Intro animation, profile picker, passcode gate, avatar swap, nav scroll.
+// script.js — Intro animation, profile picker, passcode gate, avatar swap, nav scroll, carousels.
 
 (function () {
   var introScreen = document.getElementById("introScreen");
@@ -74,9 +74,9 @@
       if (typeof showDevSection === "function") showDevSection();
     }
 
-    // Setup nav AFTER renderApp creates the DOM
     setupNavScroll();
     setupCardTilt();
+    setupCarousels();
   }
 
   // 4. Avatar dropdown
@@ -94,7 +94,7 @@
   });
 
   // === NAV SCROLL ===
-  var HEADER_HEIGHT = 60;
+  var HEADER_HEIGHT = 64;
   var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function smoothScrollTo(targetY) {
@@ -160,7 +160,6 @@
       });
     });
 
-    // IntersectionObserver for scroll-based active state
     var targets = [
       { id: "hero", section: "home" },
       { id: "projects", section: "projects" },
@@ -173,7 +172,6 @@
           if (entry.isIntersecting) {
             var match = targets.find(function (t) { return t.id === entry.target.id; });
             if (match) {
-              // When projects section is visible, keep whichever was last clicked
               if (match.section === "projects") {
                 var active = document.querySelector(".nav-link.active");
                 if (active) {
@@ -196,7 +194,6 @@
       });
     }
 
-    // Navbar background on scroll
     var navbar = document.getElementById("navbar");
     var ticking = false;
     window.addEventListener("scroll", function () {
@@ -213,6 +210,88 @@
     }, { passive: true });
   }
 
+  // === CAROUSEL: arrows, drag, keyboard, progress ===
+  function setupCarousels() {
+    document.querySelectorAll(".carousel-wrap").forEach(function (wrap) {
+      var track = wrap.querySelector(".ranked-track, .skill-track");
+      var btnLeft = wrap.querySelector(".carousel-arrow-left");
+      var btnRight = wrap.querySelector(".carousel-arrow-right");
+      var progressBar = wrap.querySelector(".carousel-progress-bar");
+      if (!track) return;
+
+      var scrollAmount = function () { return track.clientWidth * 0.8; };
+
+      // Arrow clicks
+      btnLeft.addEventListener("click", function () {
+        track.scrollBy({ left: -scrollAmount(), behavior: prefersReducedMotion ? "auto" : "smooth" });
+      });
+      btnRight.addEventListener("click", function () {
+        track.scrollBy({ left: scrollAmount(), behavior: prefersReducedMotion ? "auto" : "smooth" });
+      });
+
+      // Progress bar
+      function updateProgress() {
+        var max = track.scrollWidth - track.clientWidth;
+        var pct = max > 0 ? (track.scrollLeft / max) * 100 : 100;
+        progressBar.style.width = pct + "%";
+
+        // Show/hide arrows
+        btnLeft.classList.toggle("carousel-arrow-hidden", track.scrollLeft <= 4);
+        btnRight.classList.toggle("carousel-arrow-hidden", track.scrollLeft >= max - 4);
+      }
+
+      track.addEventListener("scroll", updateProgress, { passive: true });
+      updateProgress();
+
+      // Mouse drag scrolling
+      var isDragging = false;
+      var startX = 0;
+      var scrollLeft = 0;
+
+      track.addEventListener("mousedown", function (e) {
+        if (e.target.closest("a, button")) return;
+        isDragging = true;
+        track.style.cursor = "grabbing";
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+        e.preventDefault();
+      });
+
+      track.addEventListener("mouseleave", function () {
+        isDragging = false;
+        track.style.cursor = "";
+      });
+
+      track.addEventListener("mouseup", function () {
+        isDragging = false;
+        track.style.cursor = "";
+      });
+
+      track.addEventListener("mousemove", function (e) {
+        if (!isDragging) return;
+        e.preventDefault();
+        var x = e.pageX - track.offsetLeft;
+        var walk = (x - startX) * 1.5;
+        track.scrollLeft = scrollLeft - walk;
+      });
+
+      // Keyboard navigation (arrow keys when track or child is focused)
+      track.setAttribute("tabindex", "0");
+      track.setAttribute("role", "region");
+      track.setAttribute("aria-label", "Scrollable content row");
+
+      track.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowRight") {
+          track.scrollBy({ left: scrollAmount(), behavior: prefersReducedMotion ? "auto" : "smooth" });
+          e.preventDefault();
+        } else if (e.key === "ArrowLeft") {
+          track.scrollBy({ left: -scrollAmount(), behavior: prefersReducedMotion ? "auto" : "smooth" });
+          e.preventDefault();
+        }
+      });
+    });
+  }
+
   // === CURSOR-REACTIVE CARD TILT + SPOTLIGHT GLOW ===
   function setupCardTilt() {
     if (prefersReducedMotion) return;
@@ -227,13 +306,11 @@
         var midX = rect.width / 2;
         var midY = rect.height / 2;
 
-        // 3D tilt: max ±6°
         var rotateY = ((x - midX) / midX) * 6;
         var rotateX = ((midY - y) / midY) * 6;
 
         card.style.transform = "perspective(600px) rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg) scale(1.06)";
 
-        // Spotlight glow position
         var pctX = (x / rect.width) * 100;
         var pctY = (y / rect.height) * 100;
         card.style.setProperty("--mx", pctX + "%");

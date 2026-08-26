@@ -29,6 +29,26 @@ function el(tag, attrs, children) {
   return e;
 }
 
+var CHEVRON_SVG = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
+var CHEVRON_LEFT_SVG = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+
+function wrapInCarousel(track) {
+  var wrap = el("div", { className: "carousel-wrap" });
+
+  var btnLeft = el("button", { className: "carousel-arrow carousel-arrow-left", "aria-label": "Scroll left", innerHTML: CHEVRON_LEFT_SVG });
+  var btnRight = el("button", { className: "carousel-arrow carousel-arrow-right", "aria-label": "Scroll right", innerHTML: CHEVRON_SVG });
+  var progress = el("div", { className: "carousel-progress" });
+  var bar = el("div", { className: "carousel-progress-bar" });
+  progress.appendChild(bar);
+
+  wrap.appendChild(btnLeft);
+  wrap.appendChild(track);
+  wrap.appendChild(btnRight);
+  wrap.appendChild(progress);
+
+  return wrap;
+}
+
 function renderHero() {
   var app = document.getElementById("app");
   var hero = el("header", { id: "hero", className: "hero" });
@@ -100,7 +120,7 @@ function renderProjects() {
     track.appendChild(item);
   });
 
-  section.appendChild(track);
+  section.appendChild(wrapInCarousel(track));
   app.appendChild(section);
 }
 
@@ -136,7 +156,7 @@ function renderSkills() {
       track.appendChild(poster);
     });
 
-    section.appendChild(track);
+    section.appendChild(wrapInCarousel(track));
   });
 
   app.appendChild(section);
@@ -161,7 +181,8 @@ function renderBeyondCode() {
     card.appendChild(el("span", { textContent: item.name }));
     track.appendChild(card);
   });
-  section.appendChild(track);
+
+  section.appendChild(wrapInCarousel(track));
   app.appendChild(section);
 }
 
@@ -181,7 +202,8 @@ function renderFavorites() {
     card.appendChild(el("span", { className: "fav-title", textContent: movie.title }));
     track.appendChild(card);
   });
-  section.appendChild(track);
+
+  section.appendChild(wrapInCarousel(track));
   app.appendChild(section);
 }
 
@@ -202,7 +224,8 @@ function renderConnect() {
     card.appendChild(el("span", { textContent: item.name }));
     track.appendChild(card);
   });
-  section.appendChild(track);
+
+  section.appendChild(wrapInCarousel(track));
   app.appendChild(section);
 }
 

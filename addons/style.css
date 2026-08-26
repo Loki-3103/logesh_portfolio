@@ -446,18 +446,76 @@ body {
   margin-bottom: var(--space-lg);
 }
 
+/* ===== CAROUSEL WRAPPER ===== */
+.carousel-wrap {
+  position: relative;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 0;
+  bottom: 36px;
+  width: 44px;
+  z-index: 10;
+  background: rgba(10, 10, 10, 0.85);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.15s ease;
+  border-radius: 4px;
+}
+
+.carousel-wrap:hover .carousel-arrow { opacity: 1; }
+.carousel-arrow:hover { background: rgba(30, 30, 30, 0.95); }
+.carousel-arrow:active { transform: scale(0.92); }
+
+.carousel-arrow-left { left: -4px; }
+.carousel-arrow-right { right: -4px; }
+
+.carousel-arrow-hidden { opacity: 0 !important; pointer-events: none; }
+
+.carousel-progress {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  margin-top: var(--space-sm);
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.carousel-wrap:hover .carousel-progress { opacity: 1; }
+
+.carousel-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--red);
+  border-radius: 2px;
+  transition: width 0.15s ease-out;
+}
+
 /* ===== TOP PROJECTS (ranked) ===== */
 .ranked-track {
   display: flex;
   gap: 0;
   overflow-x: auto;
+  overflow-y: hidden;
   padding-bottom: var(--space-md);
   padding-top: var(--space-sm);
+  padding-right: 48px;
   scroll-snap-type: x proximity;
+  cursor: grab;
+  outline: none;
 }
 
 .ranked-track::-webkit-scrollbar { display: none; }
 .ranked-track { -ms-overflow-style: none; scrollbar-width: none; }
+.ranked-track:active { cursor: grabbing; }
+.ranked-track:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; border-radius: 4px; }
 
 .ranked-item {
   display: flex;
@@ -492,13 +550,13 @@ body {
   justify-content: flex-end;
   position: relative;
   z-index: 2;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   overflow: hidden;
 }
 
 .poster:hover {
-  transform: scale(1.04);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  transform: scale(1.06);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
 }
 
 .poster-img-wrap {
@@ -543,13 +601,19 @@ body {
   display: flex;
   gap: 16px;
   overflow-x: auto;
+  overflow-y: hidden;
   padding-bottom: var(--space-md);
   margin-bottom: var(--space-sm);
+  padding-right: 48px;
   scroll-snap-type: x proximity;
+  cursor: grab;
+  outline: none;
 }
 
 .skill-track::-webkit-scrollbar { display: none; }
 .skill-track { -ms-overflow-style: none; scrollbar-width: none; }
+.skill-track:active { cursor: grabbing; }
+.skill-track:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; border-radius: 4px; }
 
 .skill-poster {
   flex: 0 0 150px;
@@ -706,10 +770,16 @@ body {
   .row { padding: var(--space-xl) var(--side) var(--space-md); }
   .row-title { font-size: 12px; margin-bottom: var(--space-md); }
 
+  .carousel-arrow { width: 36px; opacity: 1; background: rgba(10,10,10,0.9); }
+  .carousel-arrow svg { width: 18px; height: 18px; }
+  .carousel-progress { opacity: 1; }
+
+  .ranked-track { padding-right: 36px; }
   .rank-number { font-size: 100px; margin-right: -20px; }
   .poster { width: 150px; height: 220px; }
   .ranked-item { margin-right: 20px; }
 
+  .skill-track { flex: 0 0 130px; padding-right: 36px; }
   .skill-poster { flex: 0 0 130px; }
 
   .dev-grid { grid-template-columns: 1fr; }
