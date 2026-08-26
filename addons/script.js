@@ -129,12 +129,7 @@
   function setActiveLink(section) {
     document.querySelectorAll(".nav-link").forEach(function (link) {
       var s = link.getAttribute("data-section");
-      var active =
-        (s === "home" && section === "home") ||
-        (s === "projects" && (section === "projects" || section === "skills")) ||
-        (s === "skills" && (section === "projects" || section === "skills")) ||
-        (s === "connect" && section === "connect");
-      link.classList.toggle("active", !!active);
+      link.classList.toggle("active", s === section);
     });
   }
 
@@ -176,7 +171,17 @@
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             var match = targets.find(function (t) { return t.id === entry.target.id; });
-            if (match) setActiveLink(match.section);
+            if (match) {
+              // When projects section is visible, keep whichever was last clicked
+              if (match.section === "projects") {
+                var active = document.querySelector(".nav-link.active");
+                if (active) {
+                  var s = active.getAttribute("data-section");
+                  if (s === "projects" || s === "skills") return;
+                }
+              }
+              setActiveLink(match.section);
+            }
           }
         });
       }, {
