@@ -31,7 +31,7 @@ function el(tag, attrs, children) {
 
 function renderHero() {
   var app = document.getElementById("app");
-  var hero = el("header", { className: "hero" });
+  var hero = el("header", { id: "hero", className: "hero" });
 
   hero.appendChild(el("p", { className: "hero-eyebrow", textContent: "Featured" }));
   hero.appendChild(el("h1", { className: "hero-title", textContent: PROFILE.name }));
