@@ -15,25 +15,27 @@
 
   <!-- Who's watching -->
   <div id="profileScreen" class="profile-screen hidden">
-    <h2 class="profile-heading">Who's viewing?</h2>
-    <div class="profile-row">
+    <h1 class="profile-heading">Who's watching?</h1>
+    <div class="profile-row" role="list" aria-label="Profile selection">
 
-      <div class="profile-card" data-profile="recruiter">
-        <div class="profile-icon"><img src="images/recruiter.jpg" alt="Recruiter" /></div>
+      <button class="profile-card" data-profile="recruiter" role="listitem" aria-label="Select Recruiter profile" tabindex="0">
+        <div class="profile-icon"><img src="images/recruiter.jpg" alt="" /></div>
         <span class="profile-label">Recruiter</span>
-      </div>
+      </button>
 
-      <div class="profile-card" data-profile="developer">
-        <div class="profile-icon"><img src="images/developer.jpg" alt="Developer" /><i class="lock-badge">&#128274;</i></div>
+      <button class="profile-card" data-profile="developer" role="listitem" aria-label="Select Developer profile" tabindex="0">
+        <div class="profile-icon"><img src="images/developer.jpg" alt="" /><i class="lock-badge">&#128274;</i></div>
         <span class="profile-label">Developer</span>
-      </div>
+      </button>
 
-      <div class="profile-card" data-profile="browsing">
-        <div class="profile-icon"><img src="images/just_browsing.jpg" alt="Just browsing" /></div>
+      <button class="profile-card" data-profile="browsing" role="listitem" aria-label="Select Just browsing profile" tabindex="0">
+        <div class="profile-icon"><img src="images/just_browsing.jpg" alt="" /></div>
         <span class="profile-label">Just browsing</span>
-      </div>
+      </button>
 
     </div>
+
+    <button class="manage-profiles-btn" id="manageProfilesBtn" tabindex="0">Manage Profiles</button>
 
     <!-- Passcode prompt for Developer profile -->
     <div id="passcodeBox" class="passcode-box hidden">

@@ -34,7 +34,8 @@
   }, 2100);
 
   // 2. Profile cards
-  document.querySelectorAll(".profile-card").forEach(function (card) {
+  var profileCards = document.querySelectorAll(".profile-card");
+  profileCards.forEach(function (card) {
     card.addEventListener("click", function () {
       var profile = card.dataset.profile;
       if (profile === "developer") {
@@ -43,6 +44,24 @@
         return;
       }
       enterSite(profile);
+    });
+  });
+
+  // Keyboard navigation between profile cards (arrow keys)
+  profileCards.forEach(function (card, idx) {
+    card.addEventListener("keydown", function (e) {
+      var total = profileCards.length;
+      var nextIdx = idx;
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        nextIdx = (idx + 1) % total;
+        e.preventDefault();
+      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        nextIdx = (idx - 1 + total) % total;
+        e.preventDefault();
+      } else {
+        return;
+      }
+      profileCards[nextIdx].focus();
     });
   });
 
