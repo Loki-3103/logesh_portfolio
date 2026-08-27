@@ -24,10 +24,9 @@
   --side: max(24px, calc((100vw - var(--max-w)) / 2));
 }
 
+/* ===== NEUTRAL BACKGROUND FOR LOGIN/INTRO (pre-auth) ===== */
 body {
-  position: relative;
-  background: #0a0a0a; /* fallback */
-  background: linear-gradient(135deg, #000000 0%, #0a0a0a 35%, #1a0808 65%, #0a0a0a 100%);
+  background: #050505;
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   overflow-x: hidden;
@@ -36,31 +35,55 @@ body {
   min-height: 100vh;
 }
 
-/* Animated gradient mesh overlay */
-body::before {
+/* Intro & profile screens stay on neutral background */
+.intro-screen,
+.profile-screen {
+  background: #050505;
+}
+
+/* ===== POST-LOGIN GRADIENT THEME (applied to .main-site) ===== */
+.main-site {
+  position: relative;
+  min-height: 100vh;
+  background: #0a0a0a; /* fallback */
+  background: linear-gradient(
+    160deg,
+    #2d0a0a 0%,        /* deep crimson-red top */
+    #3d0d0d 15%,       /* rich red-black */
+    #2d1505 35%,       /* red-amber blend */
+    #1a0808 55%,       /* crimson-black mid */
+    #0f0505 75%,       /* deep red-black */
+    #050505 100%       /* near-black bottom */
+  );
+}
+
+/* Animated gradient mesh overlay on main site */
+.main-site::before {
   content: "";
   position: fixed;
   inset: -50%;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 60% 50% at 20% 30%, rgba(229,9,20,0.12) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 60% at 80% 70%, rgba(139,0,0,0.10) 0%, transparent 65%),
-    radial-gradient(ellipse 40% 40% at 50% 50%, rgba(220,20,60,0.06) 0%, transparent 75%);
-  animation: gradientShift 20s ease-in-out infinite alternate;
-  opacity: 0.8;
+    radial-gradient(ellipse 80% 70% at 10% 20%, rgba(229,9,20,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 80% at 90% 80%, rgba(139,0,0,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 60% at 50% 50%, rgba(220,20,60,0.14) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 50% at 25% 85%, rgba(229,9,20,0.16) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 70% 30%, rgba(220,20,60,0.10) 0%, transparent 75%);
+  animation: gradientShift 25s ease-in-out infinite alternate;
+  opacity: 1;
 }
 
 /* Subtle film grain texture */
-body::after {
+.main-site::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  opacity: 0.03;
-  animation: grainShift 0.2s steps(10) infinite;
+  opacity: 0.04;
+  animation: grainShift 0.2s steps(12) infinite;
 }
 
 /* Keyframes */
@@ -86,8 +109,8 @@ body::after {
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  body::before { animation: none; }
-  body::after { animation: none; }
+  .main-site::before,
+  .main-site::after { animation: none; }
 }
 
 .hidden { display: none !important; }
@@ -690,7 +713,7 @@ body::after {
 /* ===== TIMELINE SECTION ===== */
 .timeline-section {
   padding: var(--space-2xl) var(--side) var(--space-3xl);
-  background: var(--bg);
+  /* No background - flows with main-site gradient */
 }
 
 .timeline-track {
@@ -888,7 +911,7 @@ body::after {
 /* ===== DEVELOPER SECTION ===== */
 .dev-section {
   padding: var(--space-xl) var(--side);
-  background: var(--bg-elevated);
+  /* No background - flows with main-site gradient */
 }
 
 .section-label {
