@@ -484,11 +484,8 @@ body {
   border-radius: 2px;
   margin-top: var(--space-sm);
   overflow: hidden;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  display: none;
 }
-
-.carousel-wrap:hover .carousel-progress { opacity: 1; }
 
 .carousel-progress-bar {
   height: 100%;
@@ -772,7 +769,6 @@ body {
 
   .carousel-arrow { width: 36px; opacity: 1; background: rgba(10,10,10,0.9); }
   .carousel-arrow svg { width: 18px; height: 18px; }
-  .carousel-progress { opacity: 1; }
 
   .ranked-track { padding-right: 36px; }
   .rank-number { font-size: 100px; margin-right: -20px; }

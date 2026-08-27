@@ -147,8 +147,10 @@
           return;
         }
 
-        if (section === "projects" || section === "skills") {
+        if (section === "projects") {
           target = document.getElementById("projects");
+        } else if (section === "skills") {
+          target = document.getElementById("skills");
         } else if (section === "connect") {
           target = document.getElementById("connect");
         }
