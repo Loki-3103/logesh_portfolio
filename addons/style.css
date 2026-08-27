@@ -550,7 +550,7 @@ body {
 .hero-video-play {
   position: absolute;
   bottom: var(--space-2xl);
-  left: var(--space-2xl);
+  right: var(--space-2xl);
   z-index: 2;
   width: 72px;
   height: 72px;
@@ -590,7 +590,7 @@ body {
   .hero-role { font-size: clamp(16px, 2vw, 20px); }
   .hero-meta { font-size: clamp(11px, 1.3vw, 13px); }
   .hero-content { padding: 0 var(--space-lg) var(--space-lg); }
-  .hero-video-play { bottom: var(--space-lg); left: var(--space-lg); }
+  .hero-video-play { bottom: var(--space-lg); right: var(--space-lg); }
 }
 
 @media (max-width: 640px) {
@@ -620,7 +620,7 @@ body {
   .hero-meta { font-size: clamp(11px, 2.5vw, 13px); margin-bottom: var(--space-md); }
   .hero-actions { justify-content: flex-start; width: 100%; }
   .hero-actions .btn { flex: 1; max-width: 200px; justify-content: center; }
-  .hero-video-play { display: flex; position: fixed; bottom: var(--space-2xl); left: var(--space-lg); z-index: 10; }
+  .hero-video-play { display: flex; position: fixed; bottom: var(--space-2xl); right: var(--space-lg); z-index: 10; }
 }
 
 /* ===== TIMELINE SECTION ===== */
