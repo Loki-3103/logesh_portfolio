@@ -681,9 +681,9 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     padding: var(--space-3xl) var(--side) var(--space-2xl);
     text-align: center;
-    align-items: center;
   }
   .hero-name { font-size: clamp(28px, 7vw, 40px); margin-bottom: var(--space-md); }
   .hero-role { font-size: clamp(14px, 3vw, 16px); max-width: 100%; margin-bottom: var(--space-lg); }
@@ -706,6 +706,50 @@ body {
     scroll-snap-align: none;
   }
   .timeline-track::-webkit-scrollbar { display: none; }
+}
+
+/* ===== LEGACY HERO (rendered by render.js) — centered ===== */
+.hero {
+  padding: var(--space-2xl) var(--side) var(--space-xl);
+  text-align: center;
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: var(--space-lg);
+}
+
+.hero-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.hero-tagline {
+  font-size: 16px;
+  color: var(--text-muted);
+  margin-bottom: var(--space-md);
+  letter-spacing: 0.2px;
+}
+
+.hero-desc {
+  font-size: 15px;
+  color: #bbb;
+  max-width: 600px;
+  margin: 0 auto var(--space-xl);
+  line-height: 1.75;
+}
+
+.hero-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 /* ===== DEVELOPER SECTION ===== */
