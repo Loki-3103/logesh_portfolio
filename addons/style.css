@@ -409,13 +409,13 @@ body {
 
 .dropdown-switch:hover { color: #fff; }
 
-/* ===== HERO BANNER ===== */
+/* ===== HERO BANNER (Netflix-style) ===== */
 .hero-banner {
   position: relative;
   width: 100%;
-  height: 75vh;
-  min-height: 500px;
-  max-height: 800px;
+  height: 88vh;
+  min-height: 550px;
+  max-height: 900px;
   overflow: hidden;
 }
 
@@ -429,6 +429,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  animation: kenBurns 20s ease-in-out infinite alternate;
   transition: opacity 0.4s ease;
 }
 
@@ -446,11 +447,18 @@ body {
 .hero-banner:hover .hero-photo { opacity: 0; }
 .hero-banner:hover .hero-video { opacity: 1; }
 
-.hero-overlay {
+/* Netflix-style dual gradient overlay */
+.hero-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.6) 40%, rgba(229,9,20,0.25) 70%, rgba(10,10,10,0.95) 100%);
   pointer-events: none;
+  background:
+    /* Vertical: transparent top → black bottom (covers ~50% from bottom) */
+    linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 15%, rgba(0,0,0,0.4) 35%, rgba(0,0,0,0) 60%),
+    /* Horizontal: dark left → transparent right (covers ~40% from left) */
+    linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 25%, rgba(0,0,0,0) 55%),
+    /* Subtle vignette edges */
+    radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.3) 100%);
 }
 
 .hero-content {
@@ -458,29 +466,40 @@ body {
   z-index: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
+  align-items: flex-start;
   height: 100%;
-  padding: 0 var(--side) var(--space-2xl);
+  padding: 0 var(--space-2xl) var(--space-2xl);
   color: #fff;
-  text-align: center;
+  text-align: left;
+  max-width: 900px;
 }
 
 .hero-name {
-  font-size: clamp(36px, 5vw, 56px);
-  font-weight: 700;
-  letter-spacing: -1px;
-  line-height: 1.1;
-  margin-bottom: var(--space-sm);
-  text-shadow: 0 2px 16px rgba(0,0,0,0.6);
+  font-size: clamp(56px, 7vw, 88px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1.05;
+  margin-bottom: var(--space-xs);
+  text-shadow: 0 2px 24px rgba(0,0,0,0.7);
 }
 
 .hero-role {
-  font-size: clamp(16px, 2vw, 20px);
+  font-size: clamp(18px, 2.2vw, 22px);
   font-weight: 400;
-  color: #ddd;
-  margin-bottom: var(--space-xl);
-  max-width: 600px;
+  color: #e5e5e5;
+  margin-bottom: var(--space-sm);
+  max-width: 700px;
+  text-shadow: 0 1px 12px rgba(0,0,0,0.5);
+}
+
+.hero-meta {
+  font-size: clamp(12px, 1.4vw, 14px);
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: var(--space-lg);
   text-shadow: 0 1px 8px rgba(0,0,0,0.5);
 }
 
@@ -491,43 +510,47 @@ body {
 }
 
 .hero-actions .btn {
-  padding: 12px 28px;
-  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  font-size: 14px;
   font-weight: 600;
   border-radius: 4px;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
   transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+  white-space: nowrap;
 }
 
 .hero-actions .btn:active { transform: scale(0.97); }
 
+.hero-actions .btn-icon { flex-shrink: 0; }
+
 .hero-actions .btn-primary {
-  background: var(--red);
-  color: #fff;
+  background: #fff;
+  color: #000;
   border: none;
 }
 
 .hero-actions .btn-primary:hover {
-  background: #f40612;
-  box-shadow: 0 4px 20px rgba(229,9,20,0.4);
+  background: #e0e0e0;
+  box-shadow: 0 4px 20px rgba(255,255,255,0.3);
 }
 
 .hero-actions .btn-secondary {
-  background: rgba(255,255,255,0.1);
+  background: rgba(109,109,110,0.7);
   color: #fff;
-  border: 1px solid rgba(255,255,255,0.3);
-  backdrop-filter: blur(8px);
+  border: none;
 }
 
 .hero-actions .btn-secondary:hover {
-  background: rgba(255,255,255,0.2);
-  border-color: rgba(255,255,255,0.5);
+  background: rgba(109,109,110,0.9);
 }
 
 .hero-video-play {
   position: absolute;
-  bottom: var(--space-xl);
-  right: var(--side);
+  bottom: var(--space-2xl);
+  left: var(--space-2xl);
   z-index: 2;
   width: 72px;
   height: 72px;
@@ -552,6 +575,52 @@ body {
 .hero-video-play:focus-visible {
   outline: 2px solid #fff;
   outline-offset: 3px;
+}
+
+/* Ken Burns slow zoom */
+@keyframes kenBurns {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.05) translate(-1%, -1%); }
+}
+
+/* Responsive hero */
+@media (max-width: 900px) {
+  .hero-banner { height: 80vh; min-height: 500px; }
+  .hero-name { font-size: clamp(48px, 6vw, 72px); }
+  .hero-role { font-size: clamp(16px, 2vw, 20px); }
+  .hero-meta { font-size: clamp(11px, 1.3vw, 13px); }
+  .hero-content { padding: 0 var(--space-lg) var(--space-lg); }
+  .hero-video-play { bottom: var(--space-lg); left: var(--space-lg); }
+}
+
+@media (max-width: 640px) {
+  .hero-banner {
+    height: auto;
+    min-height: 100vh;
+    padding-bottom: var(--space-3xl);
+  }
+  .hero-media { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
+  .hero-photo { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; }
+  .hero-video { display: none; }
+  .hero-gradient { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    height: auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: var(--space-3xl) var(--space-lg) var(--space-2xl);
+    text-align: left;
+  }
+  .hero-name { font-size: clamp(36px, 8vw, 52px); margin-bottom: var(--space-xs); }
+  .hero-role { font-size: clamp(15px, 3vw, 18px); max-width: 100%; margin-bottom: var(--space-sm); }
+  .hero-meta { font-size: clamp(11px, 2.5vw, 13px); margin-bottom: var(--space-md); }
+  .hero-actions { justify-content: flex-start; width: 100%; }
+  .hero-actions .btn { flex: 1; max-width: 200px; justify-content: center; }
+  .hero-video-play { display: flex; position: fixed; bottom: var(--space-2xl); left: var(--space-lg); z-index: 10; }
 }
 
 /* ===== TIMELINE SECTION ===== */
