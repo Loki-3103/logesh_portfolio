@@ -146,7 +146,9 @@ function renderSkills() {
       }
 
       if (skill.icon) {
-        poster.appendChild(el("img", { src: skill.icon, alt: skill.name }));
+        var img = el("img", { src: skill.icon, alt: skill.name });
+        if (skill.light) img.classList.add("light-icon");
+        poster.appendChild(img);
       } else if (skill.glyph) {
         poster.classList.add("skill-poster-text");
         poster.appendChild(el("span", { className: "skill-glyph", textContent: skill.glyph }));

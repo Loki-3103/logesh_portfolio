@@ -650,6 +650,7 @@ body {
 .skill-poster:hover::before { opacity: 1; }
 .skill-poster:hover { background: var(--card-hover); box-shadow: 0 0 20px rgba(229,9,20,0.12); }
 .skill-poster img { width: 36px; height: 36px; object-fit: contain; position: relative; z-index: 2; }
+.skill-poster img.light-icon { filter: invert(1); }
 .skill-poster span { position: relative; z-index: 2; letter-spacing: 0.3px; }
 .skill-poster-text .skill-glyph { font-size: 22px; color: var(--text); font-weight: 600; }
 
