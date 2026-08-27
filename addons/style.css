@@ -409,14 +409,17 @@ body {
 
 .dropdown-switch:hover { color: #fff; }
 
-/* ===== HERO BANNER (Netflix-style) ===== */
+/* ===== HERO BANNER (Netflix-style floating card) ===== */
 .hero-banner {
   position: relative;
   width: 100%;
   height: 88vh;
   min-height: 550px;
   max-height: 900px;
+  margin: 20px 24px 0 24px;
+  border-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
 }
 
 .hero-media {
@@ -595,24 +598,26 @@ body {
 
 @media (max-width: 640px) {
   .hero-banner {
-    height: auto;
-    min-height: 100vh;
-    padding-bottom: var(--space-3xl);
+    height: 70vh;
+    min-height: 450px;
+    max-height: 600px;
+    margin: 16px 16px 0 16px;
+    border-radius: 12px;
+    padding-bottom: 0;
   }
-  .hero-media { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
-  .hero-photo { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; }
+  .hero-media { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+  .hero-photo { position: absolute; inset: 0; width: 100%; height: 100%; }
   .hero-video { display: none; }
-  .hero-gradient { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; }
+  .hero-gradient { position: absolute; inset: 0; width: 100%; height: 100%; }
   .hero-content {
     position: relative;
     z-index: 1;
-    height: auto;
-    min-height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-start;
-    padding: var(--space-3xl) var(--space-lg) var(--space-2xl);
+    padding: var(--space-xl) var(--space-lg) var(--space-lg);
     text-align: left;
   }
   .hero-name { font-size: clamp(36px, 8vw, 52px); margin-bottom: var(--space-xs); }
@@ -620,7 +625,7 @@ body {
   .hero-meta { font-size: clamp(11px, 2.5vw, 13px); margin-bottom: var(--space-md); }
   .hero-actions { justify-content: flex-start; width: 100%; }
   .hero-actions .btn { flex: 1; max-width: 200px; justify-content: center; }
-  .hero-video-play { display: flex; position: fixed; bottom: var(--space-2xl); right: var(--space-lg); z-index: 10; }
+  .hero-video-play { display: flex; position: absolute; bottom: var(--space-lg); right: var(--space-lg); z-index: 10; }
 }
 
 /* ===== TIMELINE SECTION ===== */
