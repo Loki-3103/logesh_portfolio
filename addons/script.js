@@ -345,4 +345,105 @@
       });
     });
   }
+
+  // === HERO BANNER: video crossfade on hover + mobile tap-to-play ===
+  function setupHeroVideo() {
+    var banner = document.getElementById("heroBanner");
+    var video = banner ? banner.querySelector(".hero-video") : null;
+    var photo = banner ? banner.querySelector(".hero-photo") : null;
+    var playBtn = document.getElementById("heroVideoPlay");
+    if (!banner || !video || !photo) return;
+
+    var prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    var videoReady = false;
+    var videoError = false;
+
+    // Check if video loads successfully
+    video.addEventListener("loadeddata", function () {
+      videoReady = true;
+      if (playBtn) playBtn.hidden = false;
+    });
+    video.addEventListener("error", function () {
+      videoError = true;
+      if (playBtn) playBtn.hidden = true;
+    });
+
+    // Desktop: hover to play
+    if (!isTouch && !prefersReducedMotion) {
+      banner.addEventListener("mouseenter", function () {
+        if (videoError) return;
+        video.play().catch(function () { videoError = true; });
+      });
+      banner.addEventListener("mouseleave", function () {
+        video.pause();
+        video.currentTime = 0;
+      });
+    }
+
+    // Mobile: tap play button to play inline
+    if (playBtn) {
+      playBtn.addEventListener("click", function () {
+        if (videoError) return;
+        if (video.paused) {
+          video.play().catch(function () { videoError = true; });
+          playBtn.innerHTML = '<svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+          playBtn.setAttribute("aria-label", "Pause video");
+        } else {
+          video.pause();
+          playBtn.innerHTML = '<svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>';
+          playBtn.setAttribute("aria-label", "Play video");
+        }
+      });
+    }
+
+    // Pause video when banner is not visible (performance)
+    if ("IntersectionObserver" in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting && !video.paused) {
+            video.pause();
+            video.currentTime = 0;
+            if (playBtn) {
+              playBtn.innerHTML = '<svg viewBox="0 0 24 24" width="48" height="48" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>';
+              playBtn.setAttribute("aria-label", "Play video");
+            }
+          }
+        });
+      }, { threshold: 0.1 });
+      observer.observe(banner);
+    }
+  }
+
+  // === TIMELINE: expand detail on click ===
+  function setupTimeline() {
+    var nodes = document.querySelectorAll(".timeline-node");
+    nodes.forEach(function (node) {
+      node.addEventListener("click", function () {
+        var expanded = node.classList.toggle("expanded");
+        node.setAttribute("aria-expanded", expanded);
+      });
+      node.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          node.click();
+        }
+      });
+      // Make focusable
+      node.setAttribute("tabindex", "0");
+      node.setAttribute("role", "button");
+      node.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  // Initialize hero video and timeline after render
+  var originalEnterSite = enterSite;
+  enterSite = function (profile) {
+    originalEnterSite(profile);
+    // Defer to next tick so DOM is ready
+    setTimeout(function () {
+      setupHeroVideo();
+      setupTimeline();
+    }, 0);
+  };
 })();
