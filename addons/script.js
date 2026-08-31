@@ -121,6 +121,10 @@
     // Close dropdown
     avatarDropdown.classList.add("hidden");
     
+    // Reset avatar and name display
+    avatarImg.src = "";
+    dropdownName.textContent = "";
+    
     // Reset passcode box if visible
     passcodeBox.classList.add("hidden");
     passcodeError.textContent = "";
