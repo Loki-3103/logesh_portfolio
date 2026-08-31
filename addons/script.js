@@ -108,9 +108,28 @@
     avatarDropdown.classList.add("hidden");
   });
 
-  switchBtn.addEventListener("click", function () {
-    window.location.reload();
+  switchBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    switchProfile();
   });
+
+  function switchProfile() {
+    // Hide main site, show profile screen
+    mainSite.classList.add("hidden");
+    profileScreen.classList.remove("hidden");
+    
+    // Close dropdown
+    avatarDropdown.classList.add("hidden");
+    
+    // Reset passcode box if visible
+    passcodeBox.classList.add("hidden");
+    passcodeError.textContent = "";
+    passcodeInput.value = "";
+    
+    // Focus first profile card for accessibility
+    var firstCard = document.querySelector(".profile-card");
+    if (firstCard) firstCard.focus();
+  }
 
   // === NAV SCROLL ===
   var HEADER_HEIGHT = 64;
