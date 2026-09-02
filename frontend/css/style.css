@@ -2,7 +2,7 @@
 
 html { 
   scroll-behavior: smooth;
-  scroll-padding-top: 80px; /* Account for fixed navbar */
+  scroll-padding-top: var(--navbar-height); /* Align with fixed navbar height */
 }
 
 /* Accessibility: Respect user's reduced motion preference */
@@ -508,7 +508,7 @@ main {
 
 /* Responsive */
 @media (max-width: 640px) {
-  .navbar { padding: 10px 16px; flex-wrap: wrap; gap: 8px; }
+  .nav-container { padding: 10px 16px; flex-wrap: wrap; gap: 8px; }
   .nav-left { gap: 14px; }
   .search-input { width: 120px; }
   .hero { padding: 0 16px 24px; }
