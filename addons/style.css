@@ -498,9 +498,11 @@ body {
 
 /* ===== NAVBAR ===== */
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 50;
+  left: 0;
+  right: 0;
+  z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -671,7 +673,7 @@ body {
   height: 88vh;
   min-height: 550px;
   max-height: 900px;
-  margin: 20px auto 0 auto;      /* Centered horizontally, 20px top gap */
+  margin: 84px auto 0 auto;      /* 64px navbar + 20px gap = 84px top margin */
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0,0,0,0.5);
@@ -859,7 +861,7 @@ body {
     max-height: 600px;
     width: calc(100% - 32px);       /* 100% minus left+right margins (16px each) */
     max-width: calc(100% - 32px);   /* Prevents overflow */
-    margin: 16px auto 0 auto;       /* Centered horizontally */
+    margin: 72px auto 0 auto;       /* 56px navbar + 16px gap = 72px top margin */
     border-radius: 12px;
     padding-bottom: 0;
     box-sizing: border-box;         /* Ensures padding/border included in width calc */
