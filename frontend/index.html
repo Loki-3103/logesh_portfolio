@@ -7,25 +7,56 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <nav class="navbar" id="navbar">
-    <div class="nav-left">
-      <a href="#/" class="logo">STREAMPORTFOLIO</a>
-      <a href="#/browse" class="nav-link">Browse</a>
-      <a href="#/watchlist" class="nav-link" data-auth="true">My List</a>
-      <a href="#/history" class="nav-link" data-auth="true">History</a>
-    </div>
-    <div class="nav-right">
-      <input type="text" id="searchInput" class="search-input" placeholder="Titles, genres..." />
-      <span id="authArea"></span>
+  <!-- Fixed Navigation Bar -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-container">
+      <div class="nav-left">
+        <a href="#home" class="logo" title="Go to home">STREAMPORTFOLIO</a>
+        <ul class="nav-menu">
+          <li><a href="#home" class="nav-link" data-section="home">Home</a></li>
+          <li><a href="#projects" class="nav-link" data-section="projects">Projects</a></li>
+          <li><a href="#/browse" class="nav-link" data-section="browse">Browse</a></li>
+          <li><a href="#/watchlist" class="nav-link" data-auth="true" data-section="watchlist">My List</a></li>
+          <li><a href="#/history" class="nav-link" data-auth="true" data-section="history">History</a></li>
+        </ul>
+      </div>
+      <div class="nav-right">
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Titles, genres..." 
+          aria-label="Search content"
+        />
+        <span id="authArea" aria-live="polite"></span>
+      </div>
+      <!-- Mobile Menu Toggle -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </nav>
 
-  <main id="app"></main>
+  <!-- Home Section -->
+  <section id="home" class="section section-home">
+    <main id="app" class="app-content"></main>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="section section-projects">
+    <div class="projects-container">
+      <h2>Projects</h2>
+      <p>Project showcase content goes here</p>
+    </div>
+  </section>
 
   <script src="js/api.js"></script>
   <script src="js/state.js"></script>
   <script src="js/components.js"></script>
   <script src="js/router.js"></script>
+  <script src="js/smooth-scroll.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
